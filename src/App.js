@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/home/Index"
+import FeaturedBlogPages from "./pages/featuredBlog/Index"
+import RecentBlogPage from "./pages/recentBlog/Index";
+import RegisterPage from "./pages/auth/RegisterPage";
+import CreateBlogPage from "./pages/createBlog/Index";
+import UpdateBlogPage from "./pages/updateBlog/Index";
+import BlogPage from "./pages/blog/Index"
+import LoginPage from "./pages/auth/LoginPage";
+import ProtectRoute from "./pages/auth/ProtectRoute";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/auth/register" element={<RegisterPage/>}/>
+      <Route path="/auth/login" element={<LoginPage/>}/>
+      <Route element={<ProtectRoute/>}>
+        <Route path="/" element={<Home/>} />
+        <Route path="/featuredblog" element={<FeaturedBlogPages/>}/>
+        <Route path="/recentblog" element={<RecentBlogPage/>}/>
+        <Route path="/createblog" element={<CreateBlogPage/>}/>
+        <Route path="/updateblog/:id" element={<UpdateBlogPage/>}/>
+        <Route path="/blogs/:id" element={<BlogPage/>} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 
