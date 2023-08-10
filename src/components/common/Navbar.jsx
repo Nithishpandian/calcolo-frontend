@@ -6,7 +6,7 @@ const Navbar = () => {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const logOut = ()=>{
-        localStorage.removeItem("myToken")
+        sessionStorage.removeItem("myToken")
         navigate("/auth/login")
     }
   return (

@@ -1,37 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import loginImg from "../../assets/images/loginPageImg.png"
 import logo from '../../assets/images/calcoloLogo.png'
-import axios from "axios"
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, reset } from '../../features/auth/authSlice'
+import { toast } from 'react-toastify'
+import Spinner from '../../components/common/Spinner'
 
 
 const LoginPage = () => {
-    const navigate = useNavigate()
-
     const [formData, setFormData] = useState({
         emailId: "",
         password: ""
     })
     const {emailId, password} = formData
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { user, isLoading, isError, isSuccess, message } = useSelector(
+        (state) => state.auth
+    )
+
+    useEffect(()=>{
+        if(isError){
+            toast.error(message)
+        }
+
+        if(isSuccess){
+            navigate("/")
+        }
+
+        dispatch(reset())
+    }, [user, isError, isSuccess, message, navigate, dispatch])
+
     const onChange = (e) => {
         setFormData((prevState) => ({
           ...prevState,
           [e.target.name]: e.target.value,
         }))
     }
+
     const onSubmit = (e)=>{
         e.preventDefault()
-        axios.post("https://calcolo-backend-yex2.onrender.com/api/users/login", {
+        const userData = {
             emailId,
             password
-        }).then(res=> {
-            localStorage.setItem("myToken", res.data.token)
-            navigate("/")
-        }).catch(err=>console.log(err))
-        setFormData({
-            emailId: "",
-            password: ""
-        })
+        }
+        dispatch(login(userData))
+    }
+
+    if(isLoading){
+        return <Spinner />
     }
 
   return (

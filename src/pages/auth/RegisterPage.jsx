@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import registerImg from "../../assets/images/loginPageImg.png"
 import logo from '../../assets/images/calcoloLogo.png'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { register, reset } from '../../features/auth/authSlice'
+import { toast } from 'react-toastify'
+import Spinner from '../../components/common/Spinner'
 
 
 const RegisterPage = () => {
-    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         userName: "",
         emailId: "",
@@ -14,6 +16,26 @@ const RegisterPage = () => {
         password2: ""
     })
     const { userName, emailId, password, password2 } = formData
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const { user, isLoading, isError, isSuccess, message } = useSelector(
+        (state) => state.auth
+    )
+
+    useEffect(()=>{
+        if(isError){
+            toast.error(message)
+        }
+
+        if(isSuccess || user){
+            navigate("/auth/login")
+        }
+
+        dispatch(reset())
+    }, [user, isError, isSuccess, message, navigate, dispatch])
+    
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -23,24 +45,29 @@ const RegisterPage = () => {
     }
     const onSubmit = (e) => {
         e.preventDefault()
-        
-        if(password === password2){
-            axios.post("https://calcolo-backend-yex2.onrender.com/api/users/", {
+
+        if(password !== password2){
+            toast.error("Password do not match")
+        } else {
+            const userData = {
                 userName,
                 emailId,
-                password
-            }).then(res=> {
-                localStorage.setItem("myToken", res.data.token)
-                navigate("/")
-            }).catch(err=>console.log(err))
+                password,
+            }
+
+            dispatch(register(userData))
         }
 
-        setFormData({
-            userName: "",
-            emailId: "",
-            password: "",
-            password2: ""
-        })
+        // setFormData({
+        //     userName: "",
+        //     emailId: "",
+        //     password: "",
+        //     password2: ""
+        // })
+    }
+
+    if (isLoading) {
+        return <Spinner />
     }
 
   return (
