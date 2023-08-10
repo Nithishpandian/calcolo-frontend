@@ -66,10 +66,6 @@ const RegisterPage = () => {
         // })
     }
 
-    if (isLoading) {
-        return <Spinner />
-    }
-
   return (
     <>
     <div className=' grid grid-cols-2'>
@@ -110,7 +106,9 @@ const RegisterPage = () => {
                     onChange={onChange}
                     placeholder='Confirm Password' 
                 />
-                <button type='submit' className=' duration-300 hover:bg-white hover:text-[#292929] hover:border hover:border-[#292929] bg-[#292929] rounded-md text-white py-[9px] font-semibold'>Sign up</button>
+                <button type='submit' className=' duration-300 hover:bg-white hover:text-[#292929] border hover:border-[#292929] bg-[#292929] rounded-md text-white py-[9px] font-semibold'>{
+                    isLoading ? <Spinner/> : "Sign up"
+                }</button>
             </form>
             <h2 className=' mr-32 mt-3 mb-4 text-sm'><span className=' text-stone-700'>Already have an account? </span><a href='/auth/login' className=' font-medium text-stone-900 hover:text-stone-600 duration-300'>Sign in</a></h2>
             <div className=" flex items-center justify-center mb-4 text-stone-600">

@@ -49,10 +49,6 @@ const LoginPage = () => {
         dispatch(login(userData))
     }
 
-    if(isLoading){
-        return <Spinner />
-    }
-
   return (
     <div className=' grid grid-cols-2'>
         <img className=' w-screen h-screen' src={loginImg} alt="" />
@@ -77,7 +73,9 @@ const LoginPage = () => {
                     onChange={onChange}
                 />
                 <h2 className=' mr-32 mt-2 mb-6 text-sm'><span className=' text-stone-700'>Dont't have an account? </span><a href='/auth/register' className=' font-medium text-stone-900 hover:text-stone-600 duration-300'>Sign up</a></h2>
-                <button className=' duration-300 hover:bg-white hover:text-[#292929] hover:border hover:border-[#292929] bg-[#292929] rounded-md text-white py-[9px] font-semibold' type='submit'>Sign in</button>
+                <button className=' duration-300 hover:bg-white hover:text-[#292929] border hover:border-[#292929] bg-[#292929] rounded-md text-white py-[9px] font-semibold' type='submit'>{
+                    isLoading ? <Spinner/> : "Sign in"
+                }</button>
             </form>
         </div>
     </div>
