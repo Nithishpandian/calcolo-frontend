@@ -1,7 +1,6 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "proxy": "https://calcolo-backend-yex2.onrender.com/api",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.15",

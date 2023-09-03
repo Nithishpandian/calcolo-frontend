@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authService"
+import axios from "axios";
 
+const API_URL = 'https://calcolo-backend-yex2.onrender.com/api/users'
 // Get user from sessionStorage
 const user = JSON.parse(sessionStorage.getItem("user"))
 
@@ -15,7 +16,13 @@ const initialState = {
 // Register user
 export const register = createAsyncThunk('/auth/register', async(user, thunkAPI) => {
         try {
-            return await authService.register(user)
+            console.log(user);
+            await axios.post(API_URL + "/", user)
+                .then(res=>{
+                    console.log(res.data);
+                    sessionStorage.setItem('user', JSON.stringify(res.data))
+                })
+                .catch(err=>console.log(err))
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -26,15 +33,19 @@ export const register = createAsyncThunk('/auth/register', async(user, thunkAPI)
 // Login user
 export const login = createAsyncThunk('/auth/login', async(user, thunkAPI)=> {
     try {
-        return await authService.login(user)
+        await axios.post(API_URL + "/login", user)
+            .then(res=>{
+                sessionStorage.setItem("myToken", JSON.stringify(res.data.token))
+            })
+            .catch(err=>console.log(err))
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
 
-export const logout = createAsyncThunk('/logout', async()=>{
-    await authService.logout()
+export const logout = createAsyncThunk('/', async()=>{
+    sessionStorage.removeItem("myToken")
 })
 
 export const authSlice = createSlice({
@@ -84,5 +95,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const {reset} = authSlice.actions
+export const { reset } = authSlice.actions
 export default authSlice.reducer

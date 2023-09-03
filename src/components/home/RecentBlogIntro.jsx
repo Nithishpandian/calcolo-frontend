@@ -23,15 +23,12 @@ const RecentBlogIntro = () => {
     }
   }, [dispatch])
 
-  if(isLoading){
-    return <Spinner/>
-  }
-
   return (
     <div className=' px-40'>
         <h1 className=' text-center font-roboto font-semibold text-4xl mb-10'>Recent Blog</h1>
         <div className='grid grid-cols-3 gap-y-10 place-items-center'>
             {
+              isLoading ? <Spinner/> : 
               blogs?blogs.map((post, index)=>
                 <GeneralBlogComponent 
                   id = {post._id}

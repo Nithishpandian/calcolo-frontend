@@ -34,7 +34,7 @@ const RegisterPage = () => {
         }
 
         dispatch(reset())
-    }, [user, isError, isSuccess, message, navigate, dispatch])
+    }, [user, isError, isSuccess, message])
     
 
     const onChange = (e) => {
@@ -57,13 +57,6 @@ const RegisterPage = () => {
 
             dispatch(register(userData))
         }
-
-        // setFormData({
-        //     userName: "",
-        //     emailId: "",
-        //     password: "",
-        //     password2: ""
-        // })
     }
 
   return (

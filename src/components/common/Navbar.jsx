@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import logo from "../../assets/images/calcoloLogo.png"
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../features/auth/authSlice'
 
 const Navbar = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const logOut = ()=>{
-        sessionStorage.removeItem("myToken")
+        dispatch(logout())
         navigate("/auth/login")
     }
   return (
