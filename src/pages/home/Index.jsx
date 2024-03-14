@@ -11,7 +11,7 @@ const Index = () => {
         <Navbar/>
         <Intro/>
         <RecentBlogIntro/>
-        <Contact/>
+        {/* <Contact/> */}
     </>
   )
 }
